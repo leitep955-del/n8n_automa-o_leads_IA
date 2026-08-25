@@ -1,0 +1,984 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d327807f-38f9-4d89-8656-bb89c2b08366",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8117f7d1-d028-4b04-ace8-0e023b626987",
+      "name": "receber lead",
+      "webhookId": "d327807f-38f9-4d89-8656-bb89c2b08366"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3a8a49ed-acfb-4b1d-9e49-a3312b32670f",
+              "name": "status",
+              "value": "Lead quente",
+              "type": "string"
+            },
+            {
+              "id": "6dc4d6b6-45fa-4f86-b1a2-b7089113a78a",
+              "name": "acao",
+              "value": "Encaminhar imediatamente para o comercial",
+              "type": "string"
+            },
+            {
+              "id": "1287e76a-fcba-4fdc-aae5-eb2c81d40e8b",
+              "name": "responsavel",
+              "value": "Equipe Comercial",
+              "type": "string"
+            },
+            {
+              "id": "216b88a6-4965-4e79-98ee-acf0385d39ff",
+              "name": "estrategia",
+              "value": "={{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).lead_score >= 85 ? 'Contato imediato com prioridade máxima' : 'Contato comercial prioritário' }}",
+              "type": "string"
+            },
+            {
+              "id": "7dfd08d0-4ed0-4c34-a5a1-e715512d0ecf",
+              "name": "resumo_comercial",
+              "value": "={{ \n'Lead: ' + $('receber lead').item.json.nome +\n' | Empresa: ' + $('receber lead').item.json.empresa +\n' | Score: ' + JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).lead_score +\n'/100 | Intenção: ' + JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).intencao +\n' | Próxima ação: ' + JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).proxima_acao_recomendada\n}}",
+              "type": "string"
+            },
+            {
+              "id": "28afcbb4-5484-4035-b3fc-3e835037d8ba",
+              "name": "mensagem_sugerida",
+              "value": "={{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).resposta_sugerida }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        800,
+        -208
+      ],
+      "id": "20413243-3504-463c-b520-f40f56c4dbaf",
+      "name": "Lead quente → Comercial"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "57757435-6050-48b1-85fa-7a1be40f3c6e",
+              "name": "status",
+              "value": "Lead morno",
+              "type": "string"
+            },
+            {
+              "id": "8c82f943-0acb-4b0e-b1e7-58367ac81151",
+              "name": "acao",
+              "value": "realizar follow-up",
+              "type": "string"
+            },
+            {
+              "id": "e8faeff3-dbe8-41eb-be1c-8aa51624080b",
+              "name": "responsavel",
+              "value": "Equipe comercial",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        816,
+        -32
+      ],
+      "id": "38f72ed7-60ea-4ac3-86a3-e632ec1ad63e",
+      "name": "Lead morno → Follow-up"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "25bb7c56-eb45-4a60-9b19-5f1d750bcfe4",
+              "name": "status",
+              "value": "Lead frio",
+              "type": "string"
+            },
+            {
+              "id": "9abc3a79-0181-464f-b9ed-089dedd19273",
+              "name": "acao",
+              "value": "Inserir em fluxo de nutrição",
+              "type": "string"
+            },
+            {
+              "id": "6f14e679-a40e-487e-8586-1028c7db07fa",
+              "name": "responsavel",
+              "value": "marketing",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        800,
+        176
+      ],
+      "id": "c8f0bd52-3bfe-4c73-be39-96756c8293b2",
+      "name": "Lead frio → Nutrição"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA",
+          "mode": "list",
+          "cachedResultName": "Leads - Fellowship IA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $('receber lead').item.json.nome }}",
+            "Empresa ": "={{ $('receber lead').item.json.empresa }}",
+            "Mensagem": "={{ $('receber lead').item.json.mensagem }}",
+            "Status": "={{ $json.status }}",
+            "Ação": "={{ $json.acao }}",
+            "Responsável": "={{ $json.responsavel }}",
+            "Lead Score": "={{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).lead_score }}",
+            "Estratégia": "={{ $json.estrategia }}",
+            "Resumo comercial": "={{ $json.resumo_comercial }}",
+            "Mensagem sugerida": "={{ $json.mensagem_sugerida }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Empresa ",
+              "displayName": "Empresa ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mensagem",
+              "displayName": "Mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ação",
+              "displayName": "Ação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Responsável",
+              "displayName": "Responsável",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Estratégia",
+              "displayName": "Estratégia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Resumo comercial",
+              "displayName": "Resumo comercial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mensagem sugerida",
+              "displayName": "Mensagem sugerida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1440,
+        -208
+      ],
+      "id": "73f452dc-82e4-40c6-ae1e-0c562bffc3c2",
+      "name": "Registrar Lead Quente",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "JRkIOiQBLf4t0cza",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA",
+          "mode": "list",
+          "cachedResultName": "Leads - Fellowship IA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $('receber lead').item.json.nome }}",
+            "Empresa ": "={{ $('receber lead').item.json.empresa }}",
+            "Mensagem": "={{ $('receber lead').item.json.mensagem }}",
+            "Status": "={{ $json.status }}",
+            "Ação": "={{ $json.acao }}",
+            "Responsável": "={{ $json.responsavel }}",
+            "Lead Score": "={{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).lead_score }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Empresa ",
+              "displayName": "Empresa ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mensagem",
+              "displayName": "Mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ação",
+              "displayName": "Ação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Responsável",
+              "displayName": "Responsável",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1600,
+        -32
+      ],
+      "id": "9cdd1830-dee9-4121-b76c-4b3e9dcd0a7c",
+      "name": "Registrar Lead Morno",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "JRkIOiQBLf4t0cza",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA",
+          "mode": "list",
+          "cachedResultName": "Leads - Fellowship IA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a0wR7c_-08K3w-VltlsddCEASjQqqxX_jdw35gMXlmA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $('receber lead').item.json.nome }}",
+            "Empresa ": "={{ $('receber lead').item.json.empresa }}",
+            "Mensagem": "={{ $('receber lead').item.json.mensagem }}",
+            "Status": "={{ $json.status }}",
+            "Ação": "={{ $json.acao }}",
+            "Responsável": "={{ $json.responsavel }}",
+            "Lead Score": "={{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).lead_score }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Empresa ",
+              "displayName": "Empresa ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mensagem",
+              "displayName": "Mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ação",
+              "displayName": "Ação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Responsável",
+              "displayName": "Responsável",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1600,
+        176
+      ],
+      "id": "28d77c73-00f9-45b4-aaa0-d3f5a071f2e8",
+      "name": "Registrar Lead Frio",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "JRkIOiQBLf4t0cza",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você é uma IA responsável por qualificar leads comerciais.\n\nAnalise o lead:\n\nNome: {{ $json.nome }}\nEmpresa: {{ $json.empresa }}\nMensagem: {{ $json.mensagem }}\n\nRetorne somente um JSON válido neste formato:\n\n{\n  \"intencao\": \"\",\n  \"nivel_de_interesse\": \"\",\n  \"prioridade\": \"\",\n  \"urgencia\": \"\",\n  \"potencial\": \"\",\n  \"lead_score\": 0,\n  \"proxima_acao_recomendada\": \"\",\n  \"resposta_sugerida\": \"\"\n}\n\nREGRAS:\n- nivel_de_interesse deve ser somente: baixo, medio ou alto\n- prioridade deve ser somente: baixa, media ou alta\n- urgencia deve ser somente: baixa, media ou alta\n- potencial deve ser somente: baixo, medio ou alto\n- Não utilize acentos nessas classificações.\n- Não escreva nada fora do JSON.\n- Considere intenção de compra, urgência e potencial comercial para definir a prioridade.\n- lead_score deve ser um número inteiro de 0 a 100.\n- Calcule o lead_score considerando intenção de compra, nivel de interesse, urgencia e potencial comercial.\n- Quanto maior a chance de conversao do lead, maior deve ser o lead_score."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "74bdd9d5-adbe-4773-8e20-0b6940781fd4",
+      "name": "IA - Qualificar Lead",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "fbchF3P2GWouqLSv",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.content.parts[0].text }}",
+                    "rightValue": "\"prioridade\": \"alta\"",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "8f76a762-4474-4aff-bab5-4e274d8d1cbd"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Alta prioridade"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c1afa886-48a9-42bd-90bc-d9f02b66c135",
+                    "leftValue": "={{ $json.content.parts[0].text }}",
+                    "rightValue": "\"prioridade\": \"media\"",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Media prioridade"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5f9cbf36-4ffe-40d2-b59c-19db58c89458",
+                    "leftValue": "={{ $json.content.parts[0].text }}",
+                    "rightValue": "\"prioridade\": \"baixa\"",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Baixa prioridade"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        -16
+      ],
+      "id": "ccc32fb2-d9b3-43c4-be80-bc64794ac4f8",
+      "name": "Decidir Prioridade"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4f139f83-ae2c-49e7-8f6f-675a97d9c74c",
+              "leftValue": "={{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).lead_score }}",
+              "rightValue": 85,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1008,
+        -320
+      ],
+      "id": "6b50439c-9dba-401a-a728-5536d9ee8498",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "leitep955@gmail.com",
+        "subject": "🚨 ALERTA: Novo Lead Quente",
+        "message": "=<h2>🔥 Novo Lead de Alta Prioridade</h2>  <p><strong>Nome:</strong> {{ $('receber lead').item.json.nome }}</p>  <p><strong>Empresa:</strong> {{ $('receber lead').item.json.empresa }}</p>  <p><strong>Mensagem:</strong> {{ $('receber lead').item.json.mensagem }}</p>  <p><strong>Lead Score:</strong> {{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).lead_score }}/100</p>  <p><strong>Estratégia:</strong> {{ $json.estrategia }}</p>  <p><strong>Resumo comercial:</strong> {{ $json.resumo_comercial }}</p>  <p><strong>Mensagem sugerida:</strong> {{ $json.mensagem_sugerida }}</p>  <hr>  <p><strong>⚡ Ação recomendada:</strong> entrar em contato com este lead o mais rápido possível.</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        -336
+      ],
+      "id": "8a697b2b-05d2-4d75-8565-f56ac3733b7c",
+      "name": "Send a message",
+      "webhookId": "1d0d342f-5ab0-4c29-a0d1-72ae8416228d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "84O3on9m9dRxBE5H",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        -32
+      ],
+      "id": "dcd35891-ba39-4cb5-a859-88386d00d160",
+      "name": "Wait",
+      "webhookId": "a423ffd0-b110-473c-9af8-99d4d9fb4b66"
+    },
+    {
+      "parameters": {
+        "sendTo": "leitep955@gmail.com",
+        "subject": "Follow-up sobre nosso serviço",
+        "message": "=<p>Olá, {{ $('receber lead').item.json.nome }}!</p>  <p>{{ JSON.parse($('IA - Qualificar Lead').item.json.content.parts[0].text).resposta_sugerida }}</p>  <p>Se ainda tiver interesse, nossa equipe está à disposição para conversar e tirar suas dúvidas.</p>  <p>Atenciosamente,<br>Equipe Comercial</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        -32
+      ],
+      "id": "af778237-ce78-425c-a2f1-867af87d7754",
+      "name": "Send a message1",
+      "webhookId": "e71c8c51-66a9-47aa-b431-fc1d22b21450",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "84O3on9m9dRxBE5H",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você é uma IA de marketing responsável por nutrir leads que ainda não estão prontos para comprar.\n\nDados do lead:\n\nNome: {{ $('receber lead').item.json.nome }}\nEmpresa: {{ $('receber lead').item.json.empresa }}\nMensagem original: {{ $('receber lead').item.json.mensagem }}\n\nAnálise anterior:\n{{ $('IA - Qualificar Lead').item.json.content.parts[0].text }}\n\nCrie uma mensagem curta e personalizada para manter o relacionamento com esse lead.\n\nRegras:\n- Não pressione o lead a comprar.\n- Reconheça o momento atual dele.\n- Ofereça ajuda ou informação útil.\n- Mantenha a porta aberta para contato futuro.\n- Use no máximo 4 frases.\n- Retorne SOMENTE a mensagem final."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        176
+      ],
+      "id": "44074d52-af4b-4a0a-ada1-dfc810e3e3c9",
+      "name": "IA - Nutrir Lead Frio",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "fbchF3P2GWouqLSv",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "leitep955@gmail.com",
+        "subject": "Conteúdo especial para você",
+        "message": "=<p>{{ $json.content.parts[0].text }}</p>  <br>  <p>Atenciosamente,<br> Equipe Comercial</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1360,
+        176
+      ],
+      "id": "30d65652-f5c5-46f9-816a-a8a0723f64b6",
+      "name": "Send a message2",
+      "webhookId": "838986bf-659e-4481-a016-03a28d256cd4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "84O3on9m9dRxBE5H",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "receber lead": [
+      {
+        "json": {
+          "nome": "Bruno",
+          "mensagem": "Olá, estou apenas conhecendo o serviço por curiosidade. No momento não tenho intenção de contratar.",
+          "empresa": "Inova Solutions"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "receber lead": {
+      "main": [
+        [
+          {
+            "node": "IA - Qualificar Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead quente → Comercial": {
+      "main": [
+        [
+          {
+            "node": "Registrar Lead Quente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead morno → Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead frio → Nutrição": {
+      "main": [
+        [
+          {
+            "node": "IA - Nutrir Lead Frio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA - Qualificar Lead": {
+      "main": [
+        [
+          {
+            "node": "Decidir Prioridade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decidir Prioridade": {
+      "main": [
+        [
+          {
+            "node": "Lead quente → Comercial",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lead morno → Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lead frio → Nutrição",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Registrar Lead Morno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA - Nutrir Lead Frio": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        [
+          {
+            "node": "Registrar Lead Frio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "5acee3d2-5864-4a55-926b-2cb9ebc8e87c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d08f56c88d294bd6ac3dbdad3a5184bf66af850673062bca97bc53556af0b18d"
+  },
+  "nodeGroups": [],
+  "id": "B46nVXiFb67iy4Bi",
+  "tags": []
+}
